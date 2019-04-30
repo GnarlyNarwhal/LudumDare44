@@ -47,15 +47,6 @@ class GenoVector {
 		}
 
 	public:
-		static GenoVector<N, T> * newArray(uint32 length) {
-			T * v = new T[N * length];
-			GenoVector<N, T> * ret = new GenoVector<N, T>[length];
-			ret[0] = GenoVector<N, T>(v);
-			for (uint32 i = 1; i < length; ++i)
-				ret[i] = GenoVector<N, T>(v + i * N, false);
-			return ret;
-		}
-
 		T * v;
 
 		GenoVector() :
@@ -88,6 +79,7 @@ class GenoVector {
 		
 		GenoVector(const GenoVector<N, T> & vector) :
 			v(new T[N]) {
+			std::cout << "aoeu" << std::endl;
 			for (uint32 i = 0; i < N; ++i)
 				v[i] = vector.v[i];
 		}
@@ -95,16 +87,19 @@ class GenoVector {
 		GenoVector(GenoVector<N, T> && vector) noexcept :
 			owner(vector.owner),
 			v(vector.v) {
+			std::cout << "aoeu" << std::endl;
 			vector.owner = false;
 		}
 
 		GenoVector<N, T> & operator=(const GenoVector<N, T> & vector) {
+			std::cout << "aoeu" << std::endl;
 			for (uint32 i = 0; i < N; ++i)
 				v[i] = vector.v[i];
 			return *this;
 		}
 		
 		GenoVector<N, T> & operator=(GenoVector<N, T> && vector) noexcept {
+			std::cout << "aoeu" << std::endl;
 			if (owner) {
 				clean();
 				owner = vector.owner;
@@ -199,6 +194,23 @@ class GenoVector {
 			for (uint32 i = 0; i < N; ++i)
 				v[i] = scalar * projection.v[i];
 			return *this;
+		}
+
+		GenoVector<N, T> & bisect(const GenoVector<N, T> & vector) {
+			return *this = getLength() * vector + *this * vector.getLength();
+		}
+
+		GenoVector<N, T> & lerp(const GenoVector<N, T> & end, double interpAmount) {
+			for (uint32 i = 0; i < N; ++i)
+				v[i] = (T) (v[i] + (end.v[i] - v[i]) * interpAmount);
+			return *this;
+		}
+		
+		bool isZeroVector() {
+			for (uint32 i = 0; i < N; ++i)
+				if (v[i] != 0)
+					return false;
+			return true;
 		}
 
 		GenoVector<N, T> & set(const GenoVector<N, T> & set) {
@@ -394,6 +406,31 @@ GenoVector<N, T> & project(const GenoVector<N, T> & vector, const GenoVector<N, 
 	auto scalar = dot(vector, projection) / projection.getLengthSquared();
 	for (uint32 i = 0; i < N; ++i)
 		target.v[i] = scalar * projection.v[i];
+	return target;
+}
+
+template <uint32 N, typename T>
+GenoVector<N, T> bisect(const GenoVector<N, T> & vector1, const GenoVector<N, T> & vector2) {
+	return vector1.getLength() * vector2 + vector1 * vector2.getLength();
+}
+
+template <uint32 N, typename T>
+GenoVector<N, T> bisect(const GenoVector<N, T> & vector1, const GenoVector<N, T> & vector2, GenoVector<N, T> & target) {
+	return target = vector1.getLength() * vector2 + vector1 * vector2.getLength();
+}
+
+template <uint32 N, typename T>
+GenoVector<N, T> lerp(const GenoVector<N, T> & start, const GenoVector<N, T> & end, double interpAmount) {
+	auto newV = new T[N];
+	for (uint32 i = 0; i < N; ++i)
+		newV[i] = (T) (start.v[i] + (end.v[i] - start.v[i]) * interpAmount);
+	return newV;
+}
+
+template <uint32 N, typename T>
+GenoVector<N, T> & lerp(const GenoVector<N, T> & start, const GenoVector<N, T> & end, double interpAmount, GenoVector<N, T> & target) {
+	for (uint32 i = 0; i < N; ++i)
+		target.v[i] = (T) (start.v[i] + (end.v[i] - start.v[i]) * interpAmount);
 	return target;
 }
 

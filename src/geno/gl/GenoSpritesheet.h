@@ -83,7 +83,7 @@ class GenoSpritesheet : public GenoTexture {
 		GenoMatrix4f getTransform(const GenoVector2i & coords) const;
 
 		virtual void bind(uint8 textureNum = 0) const;
-		virtual void unbind() const;
+		virtual void unbind(uint8 textureNum = 0) const;
 
 		~GenoSpritesheet();
 };

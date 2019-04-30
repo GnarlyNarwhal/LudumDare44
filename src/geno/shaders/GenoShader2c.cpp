@@ -39,4 +39,8 @@ void GenoShader2c::setColor(float r, float g, float b, float a) {
 	glUniform4f(colorLoc, r, g, b, a);
 }
 
+void GenoShader2c::setColor(const GenoVector4f & color) {
+	glUniform4f(colorLoc, color.x(), color.y(), color.z(), color.w());
+}
+
 GenoShader2c::~GenoShader2c() {}

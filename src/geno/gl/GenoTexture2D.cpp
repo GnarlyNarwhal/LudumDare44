@@ -87,7 +87,8 @@ void GenoTexture2D::bind(uint8 textureNum) const {
 	glBindTexture(GL_TEXTURE_2D, id);
 }
 
-void GenoTexture2D::unbind() const {
+void GenoTexture2D::unbind(uint8 textureNum) const {
+	glActiveTexture(GL_TEXTURE0 + textureNum);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

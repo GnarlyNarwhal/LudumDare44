@@ -24,40 +24,27 @@
  *
  *******************************************************************************/
 
-#include "GenoGL.h"
-
 #include "GenoVao.h"
 
-template <typename T>
-struct GenoVertexAttribType {};
+GenoVao::GenoVao() {}
 
-template<> struct GenoVertexAttribType< int8 > { const static uint32 TYPE = GL_UNSIGNED_BYTE;  };
-template<> struct GenoVertexAttribType<uint8 > { const static uint32 TYPE = GL_BYTE;           };
-template<> struct GenoVertexAttribType< int16> { const static uint32 TYPE = GL_UNSIGNED_SHORT; };
-template<> struct GenoVertexAttribType<uint16> { const static uint32 TYPE = GL_SHORT;          };
-template<> struct GenoVertexAttribType< int32> { const static uint32 TYPE = GL_UNSIGNED_INT;   };
-template<> struct GenoVertexAttribType<uint32> { const static uint32 TYPE = GL_INT;            };
-template<> struct GenoVertexAttribType<float > { const static uint32 TYPE = GL_FLOAT;          };
-template<> struct GenoVertexAttribType<double> { const static uint32 TYPE = GL_DOUBLE;         };
-
-GenoVao::GenoVao(uint32 num, float verts[], uint32 count, uint32 indices[]) {
-	this->count = count;
-	glGenVertexArrays(1, &vao);
-	addAttrib(num, 3, verts);
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(int32), indices, GL_STATIC_DRAW);
+GenoVao::GenoVao(const GenoVao & vao) :
+	vao(vao.vao),
+	ibo(vao.ibo),
+	count(vao.count),
+	attribs(vao.attribs) {
+	for (uint32 i = 0; i < attribs; ++i)
+		vbos[i] = vao.vbos[i];
 }
 
-template <typename T>
-void GenoVao::addAttrib(uint32 num, uint32 stride, T data[]) {
-	glBindVertexArray(vao);
-	glGenBuffers(1, vbos + attribs);
-	glBindBuffer(GL_ARRAY_BUFFER, vbos[attribs]);
-	glBufferData(GL_ARRAY_BUFFER, stride * num * sizeof(T), data, GL_STATIC_DRAW);
-	glVertexAttribPointer(attribs, stride, GenoVertexAttribType<T>::TYPE, GL_FALSE, 0, (void*) 0);
-	glEnableVertexAttribArray(attribs);
-	++attribs;
+GenoVao & GenoVao::operator=(const GenoVao & vao) {
+	this->vao = vao.vao;
+	for (uint32 i = 0; i < attribs; ++i)
+		vbos[i] = vao.vbos[i];
+	this->ibo = vao.ibo;
+	this->count = vao.count;
+	this->attribs = vao.attribs;
+	return *this;
 }
 
 void GenoVao::render() {

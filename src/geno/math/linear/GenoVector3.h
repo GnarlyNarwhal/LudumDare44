@@ -76,15 +76,6 @@ class GenoVector<3, T> {
 		}
 
 	public:
-		static GenoVector<3, T> * newArray(uint32 length) {
-			T * v = new T[3 * length];
-			GenoVector<3, T> * ret = new GenoVector<3, T>[length];
-			ret[0] = GenoVector<3, T>(v);
-			for (uint32 i = 1; i < length; ++i)
-				ret[i] = GenoVector<3, T>(v + i * 3, false);
-			return ret;
-		}
-
 		T * v;
 
 		GenoVector() :
@@ -276,6 +267,23 @@ class GenoVector<3, T> {
 			v[1] /= scalar;
 			v[2] /= scalar;
 			return *this;
+		}
+
+		GenoVector<3, T> & bisect(const GenoVector<3, T> & vector) {
+			return *this = getLength() * vector + *this * vector.getLength();
+		}
+
+		GenoVector<3, T> & lerp(const GenoVector<3, T> & end, double interpAmount) {
+			v[0] = (T) (v[0] + (end.v[0] - v[0]) * interpAmount);
+			v[1] = (T) (v[1] + (end.v[1] - v[1]) * interpAmount);
+			v[2] = (T) (v[2] + (end.v[2] - v[2]) * interpAmount);
+			return *this;
+		}
+
+		bool isZeroVector() {
+			return v[0] == 0 &&
+			       v[1] == 0 &&
+			       v[2] == 0;
 		}
 
 		GenoVector<3, T> & cross(const GenoVector<3, T> & cross) {
@@ -1577,6 +1585,23 @@ GenoVector<3, T> & project(const GenoVector<3, T> & vector, const GenoVector<3, 
 	target.v[0] = scalar * projection.v[0];
 	target.v[1] = scalar * projection.v[1];
 	target.v[2] = scalar * projection.v[2];
+	return target;
+}
+
+template <typename T>
+GenoVector<3, T> lerp(const GenoVector<3, T> & start, const GenoVector<3, T> & end, double interpAmount) {
+	return {
+		(T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount),
+		(T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount),
+		(T) (start.v[2] + (end.v[2] - start.v[2]) * interpAmount)
+	};
+}
+
+template <typename T>
+GenoVector<3, T> & lerp(const GenoVector<3, T> & start, const GenoVector<3, T> & end, double interpAmount, GenoVector<3, T> & target) {
+	target.v[0] = (T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount);
+	target.v[1] = (T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount);
+	target.v[2] = (T) (start.v[2] + (end.v[2] - start.v[2]) * interpAmount);
 	return target;
 }
 

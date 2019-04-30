@@ -77,15 +77,6 @@ class GenoVector<2, T> {
 		}
 
 	public:
-		static GenoVector<2, T> * newArray(uint32 length) {
-			T * v = new T[2 * length];
-			GenoVector<2, T> * ret = new GenoVector<2, T>[length];
-			ret[0] = GenoVector<2, T>(v);
-			for (uint32 i = 1; i < length; ++i)
-				ret[i] = GenoVector<2, T>(v + i * 2, false);
-			return ret;
-		}
-
 		T * v;
 		
 		GenoVector() :
@@ -275,6 +266,21 @@ class GenoVector<2, T> {
 			v[0] /= scalar;
 			v[1] /= scalar;
 			return *this;
+		}
+
+		GenoVector<2, T> & bisect(const GenoVector<2, T> & vector) {
+			return *this = getLength() * vector + *this * vector.getLength();
+		}
+
+		GenoVector<2, T> & lerp(const GenoVector<2, T> & end, double interpAmount) {
+			v[0] = (T) (v[0] + (end.v[0] - v[0]) * interpAmount);
+			v[1] = (T) (v[1] + (end.v[1] - v[1]) * interpAmount);
+			return *this;
+		}
+		
+		bool isZeroVector() {
+			return v[0] == 0 &&
+			       v[1] == 0;
 		}
 
 		GenoVector<2, T> & shear(T axisAngle, T shearAngle) {
@@ -581,7 +587,7 @@ GenoVector<2, T> operator+(const GenoVector<2, T> & left, const GenoVector<2, T>
 
 template <typename T>
 GenoVector<2, T> operator-(const GenoVector<2, T> & left, const GenoVector<2, T> & right) {
-	return {
+   	return {
 		left.v[0] - right.v[0],
 		left.v[1] - right.v[1]
 	};
@@ -762,6 +768,21 @@ GenoVector<2, T> & project(const GenoVector<2, T> & vector, const GenoVector<2, 
 	auto scalar = dot(vector, projection) / projection.getLengthSquared();
 	target.v[0] = scalar * projection.v[0];
 	target.v[1] = scalar * projection.v[1];
+	return target;
+}
+
+template <typename T>
+GenoVector<2, T> lerp(const GenoVector<2, T> & start, const GenoVector<2, T> & end, double interpAmount) {
+	return {
+		(T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount),
+		(T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount)
+	};
+}
+
+template <typename T>
+GenoVector<2, T> & lerp(const GenoVector<2, T> & start, const GenoVector<2, T> & end, double interpAmount, GenoVector<2, T> & target) {
+	target.v[0] = (T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount);
+	target.v[1] = (T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount);
 	return target;
 }
 

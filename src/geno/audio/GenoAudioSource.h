@@ -42,6 +42,7 @@ class GenoAudioSource {
 		void stop();
 		void setBuffer(GenoAudioBuffer * buffer);
 		void loop(bool loop);
+		void setSpeed(float scale);
 		~GenoAudioSource();
 };
 

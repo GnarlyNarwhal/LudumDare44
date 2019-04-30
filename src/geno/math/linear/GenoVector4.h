@@ -76,15 +76,6 @@ class GenoVector<4, T> {
 		}
 
 	public:
-		static GenoVector<4, T> * newArray(uint32 length) {
-			T * v = new T[4 * length];
-			GenoVector<4, T> * ret = new GenoVector<4, T>[length];
-			ret[0] = GenoVector<4, T>(v);
-			for (uint32 i = 1; i < length; ++i)
-				ret[i] = GenoVector<4, T>(v + i * 4, false);
-			return ret;
-		}
-
 		T * v;
 
 		GenoVector() :
@@ -298,6 +289,25 @@ class GenoVector<4, T> {
 			v[2] /= scalar;
 			v[3] /= scalar;
 			return *this;
+		}
+
+		GenoVector<4, T> & bisect(const GenoVector<4, T> & vector) {
+			return *this = getLength() * vector + *this * vector.getLength();
+		}
+
+		GenoVector<4, T> & lerp(const GenoVector<4, T> & end, double interpAmount) {
+			v[0] = (T) (v[0] + (end.v[0] - v[0]) * interpAmount);
+			v[1] = (T) (v[1] + (end.v[1] - v[1]) * interpAmount);
+			v[2] = (T) (v[2] + (end.v[2] - v[2]) * interpAmount);
+			v[3] = (T) (v[3] + (end.v[3] - v[3]) * interpAmount);
+			return *this;
+		}
+
+		bool isZeroVector() {
+			return v[0] == 0 &&
+			       v[1] == 0 &&
+			       v[2] == 0 &&
+			       v[3] == 0;
 		}
 
 		GenoVector<4, T> & set(const GenoVector<4, T> & set) {
@@ -3349,6 +3359,25 @@ GenoVector<4, T> & project(const GenoVector<4, T> & vector, const GenoVector<4, 
 	target.v[1] = scalar * projection.v[1];
 	target.v[2] = scalar * projection.v[2];
 	target.v[3] = scalar * projection.v[3];
+	return target;
+}
+
+template <typename T>
+GenoVector<4, T> lerp(const GenoVector<4, T> & start, const GenoVector<4, T> & end, double interpAmount) {
+	return {
+		(T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount),
+		(T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount),
+		(T) (start.v[2] + (end.v[2] - start.v[2]) * interpAmount),
+		(T) (start.v[3] + (end.v[3] - start.v[3]) * interpAmount)
+	};
+}
+
+template <typename T>
+GenoVector<4, T> & lerp(const GenoVector<4, T> & start, const GenoVector<4, T> & end, double interpAmount, GenoVector<4, T> & target) {
+	target.v[0] = (T) (start.v[0] + (end.v[0] - start.v[0]) * interpAmount);
+	target.v[1] = (T) (start.v[1] + (end.v[1] - start.v[1]) * interpAmount);
+	target.v[2] = (T) (start.v[2] + (end.v[2] - start.v[2]) * interpAmount);
+	target.v[3] = (T) (start.v[3] + (end.v[3] - start.v[3]) * interpAmount);
 	return target;
 }
 

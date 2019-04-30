@@ -65,6 +65,10 @@ void GenoAudioSource::loop(bool loop) {
 	alSourcei(source, AL_LOOPING, loop);
 }
 
+void GenoAudioSource::setSpeed(float scale) {
+	alSourcef(source, AL_PITCH, scale);
+}
+
 GenoAudioSource::~GenoAudioSource() {
 	alDeleteSources(1, &source);
 }

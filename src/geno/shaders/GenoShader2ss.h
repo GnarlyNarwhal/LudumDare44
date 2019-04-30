@@ -33,6 +33,7 @@
 class GenoShader2ss : public GenoMvpShader {
 	private:
 		uint32 textureTransformLoc;
+
 	public:
 		GenoShader2ss();
 		void setTextureTransform(const GenoMatrix4f & matrix);

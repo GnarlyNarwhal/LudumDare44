@@ -70,8 +70,10 @@ void GenoLoop::start() {
 	for (uint32 i = 0; i < callbackCount; ++i) {
 		frames[i] = 0;
 		pastTimes[i] = GenoTime::getTime(milliseconds);
+		truePastTimes[i] = GenoTime::getTime(milliseconds);
 	}
 	pastTimes[callbackCount] = GenoTime::getTime(milliseconds);
+	truePastTimes[callbackCount] = GenoTime::getTime(milliseconds);
 
 	looping = true;
 	while (looping) {
@@ -86,7 +88,7 @@ void GenoLoop::start() {
 		for (uint32 i = 0; i < callbackCount; ++i) {
 			if (curTime - pastTimes[i + 1] >= millisPerFrames[i]) {
 				callbacks[i]();
-				deltas[i] = (curTime - truePastTimes[i + 1]) * deltaScales[i];
+				deltas[i] = (curTime - truePastTimes[i + 1]) * deltaScales[i] / milliseconds;
 				pastTimes[i + 1] += millisPerFrames[i];
 				truePastTimes[i + 1] = curTime;
 				++frames[i];

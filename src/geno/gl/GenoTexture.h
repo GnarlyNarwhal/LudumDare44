@@ -37,7 +37,7 @@ class GenoTexture {
 		GenoTexture(uint32 id);
 	public:
 		virtual void bind(uint8 textureNum = 0) const = 0;
-		virtual void unbind() const = 0;
+		virtual void unbind(uint8 textureNum = 0) const = 0;
 		virtual ~GenoTexture();
 };
 

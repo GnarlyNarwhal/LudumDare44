@@ -46,7 +46,7 @@ class GenoShader {
 	public:
 		void enable();
 		void disable();
-		~GenoShader();
+		virtual ~GenoShader();
 };
 
 class GenoMvpShader : public GenoShader {

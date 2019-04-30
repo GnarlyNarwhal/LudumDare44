@@ -65,7 +65,7 @@ class GenoTexture2D : public GenoTexture {
 		uint32 getWidth() const;
 		uint32 getHeight() const;
 		virtual void bind(uint8 textureNum = 0) const;
-		virtual void unbind() const;
+		virtual void unbind(uint8 textureNum = 0) const;
 		~GenoTexture2D();
 
 	friend class GenoFramebuffer;

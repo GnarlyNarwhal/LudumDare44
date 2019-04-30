@@ -137,6 +137,10 @@ class GenoQueue {
 			return std::move(array[index]);
 		}
 
+		bool hasNext() {
+			return length > 0;
+		}
+
 		void pack() {
 			reallocate(length);
 		}

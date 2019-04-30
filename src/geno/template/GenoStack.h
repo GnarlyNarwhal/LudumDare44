@@ -122,6 +122,14 @@ class GenoStack {
 			return std::move(array[--length]);
 		}
 
+		bool hasNext() {
+			return length > 0;
+		}
+
+		void pack() {
+			reallocate(length);
+		}
+
 		~GenoStack() {
 			clean();
 		}

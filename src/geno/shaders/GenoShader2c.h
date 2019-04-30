@@ -28,14 +28,17 @@
 #define GNARLY_GENOME_SHADER2C
 
 #include "../GenoInts.h"
+#include "../math/linear/GenoVector4.h"
 #include "../gl/GenoShader.h"
 
 class GenoShader2c : public GenoMvpShader {
 	private:
 		uint32 colorLoc;
+
 	public:
 		GenoShader2c();
 		void setColor(float r, float g, float b, float a);
+		void setColor(const GenoVector4f & color);
 		~GenoShader2c();
 };
 
