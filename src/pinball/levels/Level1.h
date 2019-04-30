@@ -93,7 +93,7 @@ Scene * loadLevel1(GenoCamera2D * camera, GlowShader * glow) {
 		)
 	};
 
-	return new Level(camera, glow, 5, 4, "res/img/Level1.png", numColors, palette, numWalls, walls, 7, 0, 3, { 184.5, 724.793 }, { 300, 0 });
+	return new Level(camera, glow, 5, 4, "res/img/Level1.png", numColors, palette, numWalls, walls, 6, 0, 3, { 184.5, 724.793 }, { 300, 0 });
 }
 
 #define GNARLY_PINBALL_LEVEL1_FORWARD

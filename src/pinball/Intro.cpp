@@ -52,8 +52,6 @@ Intro::Intro(GenoCamera2D * camera, GlowShader * glow, uint32 next, uint32 reset
 }
 
 void Intro::update() {
-	if (GenoInput::getKeyState(GLFW_KEY_N) == GENO_INPUT_PRESSED)
-		complete = true;
 	if (state == FADE_IN) {
 		const static auto SHADE = 0.5f;
 		time += GenoEngine::getLoop()->getDelta();

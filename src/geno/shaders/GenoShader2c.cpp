@@ -29,8 +29,8 @@
 #include "GenoShader2c.h"
 
 GenoShader2c::GenoShader2c() :
-	GenoMvpShader("src/geno/shaders/src/Shader2c/Shader2cv.gls",
-	              "src/geno/shaders/src/Shader2c/Shader2cf.gls",
+	GenoMvpShader("res/shaders/Shader2c/Shader2cv.gls",
+	              "res/shaders/Shader2c/Shader2cf.gls",
 	               GENO_SHADER_STRING_IS_PATH) {
 	colorLoc = glGetUniformLocation(program, "inputColor");
 }

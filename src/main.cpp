@@ -132,6 +132,7 @@ bool init() {
 	GenoWindowCreateInfo winInfo = {};
 	winInfo.defaultPosition = true;
 	winInfo.fullscreen      = true;
+
 	winInfo.title           = "Genome";
 	winInfo.numHints        = GENO_ARRAY_SIZE(winHints) / 2;
 	winInfo.hints           = winHints;

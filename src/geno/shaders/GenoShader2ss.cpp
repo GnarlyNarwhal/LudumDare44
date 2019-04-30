@@ -29,8 +29,8 @@
 #include "GenoShader2ss.h"
 
 GenoShader2ss::GenoShader2ss() :
-	GenoMvpShader("src/geno/shaders/src/Shader2ss/Shader2ssv.gls",
-	              "src/geno/shaders/src/Shader2ss/Shader2ssf.gls",
+	GenoMvpShader("res/shaders/Shader2ss/Shader2ssv.gls",
+	              "res/shaders/Shader2ss/Shader2ssf.gls",
 	               GENO_SHADER_STRING_IS_PATH) {
 	textureTransformLoc = glGetUniformLocation(program, "textureTransform");
 }

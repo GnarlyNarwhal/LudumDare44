@@ -29,8 +29,8 @@
 #include "GenoShader2t.h"
 
 GenoShader2t::GenoShader2t() :
-	GenoMvpShader("src/geno/shaders/src/Shader2t/Shader2tv.gls",
-	              "src/geno/shaders/src/Shader2t/Shader2tf.gls",
+	GenoMvpShader("res/shaders/Shader2t/Shader2tv.gls",
+	              "res/shaders/Shader2t/Shader2tf.gls",
 	               GENO_SHADER_STRING_IS_PATH) {}
 
 GenoShader2t::~GenoShader2t() {}

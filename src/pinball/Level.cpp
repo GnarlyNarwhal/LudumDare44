@@ -67,8 +67,6 @@ Level::Level(GenoCamera2D * camera, GlowShader * glow, uint32 next, uint32 reset
 }
 
 void Level::update() {
-	if (GenoInput::getKeyState(GLFW_KEY_N) == GENO_INPUT_PRESSED)
-		complete = true;
 	if (state == FADE_IN) {
 		bar->setColor(fromHSV(120, 0.8f, 1));
 		bar->dimensions.x()      = 1845;
